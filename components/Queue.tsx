@@ -33,7 +33,6 @@ export default class Queue extends Component<QueueProps, QueueState> {
     if (!this.props.id && !this.state.queueId) {
       return
     }
-    console.debug('componentDidMount', this.props.id)
     this.fetchData(this.props.id)
   }
 
@@ -42,13 +41,11 @@ export default class Queue extends Component<QueueProps, QueueState> {
       this.setState({
         queueId: this.props.id
       })
-      console.debug('componentDidUpdate', this.props.id)
       this.fetchData(this.props.id)
     }
   }
 
   fetchData(id: string) {
-    console.debug('fetchData', id)
     if (typeof id === 'undefined')
       return;
 
