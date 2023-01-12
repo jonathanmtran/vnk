@@ -1,8 +1,8 @@
-import Image from 'next/image';
+import Image from "next/image";
 import React from "react";
 import { YouTubeSearchResultThumbnails } from "youtube-search";
 
-export default class YouTubeThumbnail extends React.Component <YouTubeSearchResultThumbnails> {
+export default class YouTubeThumbnail extends React.Component<YouTubeSearchResultThumbnails> {
   render() {
     if (!this.props.default) {
       return;
@@ -15,6 +15,6 @@ export default class YouTubeThumbnail extends React.Component <YouTubeSearchResu
         width={this.props.default.width}
         alt="Thumbnail"
       />
-    )
+    );
   }
 }

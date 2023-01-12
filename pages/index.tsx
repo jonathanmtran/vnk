@@ -1,6 +1,6 @@
-import { Container } from '@chakra-ui/react'
-import Head from 'next/head'
-import Queues from '../components/Queues'
+import { Container } from "@chakra-ui/react";
+import Head from "next/head";
+import Queues from "../components/Queues";
 
 export default function Home() {
   return (
@@ -12,10 +12,10 @@ export default function Home() {
       </Head>
 
       <main>
-        <Container maxW='container.lg'>
+        <Container maxW="container.lg">
           <Queues />
         </Container>
       </main>
     </>
-  )
+  );
 }

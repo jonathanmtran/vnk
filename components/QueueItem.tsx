@@ -1,11 +1,14 @@
-import { LinkIcon } from '@chakra-ui/icons';
+import { LinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   ButtonGroup,
-  Card, CardBody, CardFooter, Icon
-} from '@chakra-ui/react';
-import React from 'react';
-import { FaMusic, FaUser } from 'react-icons/fa';
+  Card,
+  CardBody,
+  CardFooter,
+  Icon,
+} from "@chakra-ui/react";
+import React from "react";
+import { FaMusic, FaUser } from "react-icons/fa";
 
 interface QueueItemProps {
   id: string;
@@ -13,8 +16,8 @@ interface QueueItemProps {
   song_name: string;
   youtube_url: string;
   performed: Date;
-  onPerform(id:string): Function;
-  onRemove(id:string): Function;
+  onPerform(id: string): Function;
+  onRemove(id: string): Function;
 }
 
 export default class QueueItem extends React.Component<QueueItemProps, any> {
@@ -23,23 +26,35 @@ export default class QueueItem extends React.Component<QueueItemProps, any> {
       <Card key={this.props.id}>
         <CardBody>
           <>
-          <Icon as={FaUser} /> {this.props.name}<br />
-          <Icon as={FaMusic} /> {this.props.song_name}<br />
-          <LinkIcon /> <a href={this.props.youtube_url}>{this.props.youtube_url}</a><br />
-          {this.props.performed}
+            <Icon as={FaUser} /> {this.props.name}
+            <br />
+            <Icon as={FaMusic} /> {this.props.song_name}
+            <br />
+            <LinkIcon />{" "}
+            <a href={this.props.youtube_url}>{this.props.youtube_url}</a>
+            <br />
+            {this.props.performed}
           </>
         </CardBody>
-        {this.props.performed === null ?
-        <>
-        <CardFooter>
-          <ButtonGroup spacing={1} size='sm'>
-            { this.props.performed === null ? <Button onClick={() => this.props.onPerform(this.props.id)}>Mark as Performed</Button> : null }
-            { typeof this.props.onRemove !== 'undefined' ? <Button onClick={() => this.props.onRemove(this.props.id)}>Remove</Button> : null }
-          </ButtonGroup>
-          </CardFooter>
-        </>
-        : null}
+        {this.props.performed === null ? (
+          <>
+            <CardFooter>
+              <ButtonGroup spacing={1} size="sm">
+                {this.props.performed === null ? (
+                  <Button onClick={() => this.props.onPerform(this.props.id)}>
+                    Mark as Performed
+                  </Button>
+                ) : null}
+                {typeof this.props.onRemove !== "undefined" ? (
+                  <Button onClick={() => this.props.onRemove(this.props.id)}>
+                    Remove
+                  </Button>
+                ) : null}
+              </ButtonGroup>
+            </CardFooter>
+          </>
+        ) : null}
       </Card>
-    )
+    );
   }
 }

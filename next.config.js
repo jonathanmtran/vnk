@@ -5,10 +5,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'i.ytimg.com'
-      }
-    ]
-  }
-}
+        hostname: "i.ytimg.com",
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

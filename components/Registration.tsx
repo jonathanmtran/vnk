@@ -1,43 +1,55 @@
-import { Box, Button, Card, CardBody, CardFooter, FormControl, FormLabel, Input, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  FormControl,
+  FormLabel,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { YouTubeSearchResults } from "youtube-search";
 import YouTubeSearch from "./YouTubeSearch";
 import YouTubeThumbnail from "./YouTubeThumbnail";
 
-export default function RegistrationComponent(props:any) {
-  const [name, setName] = useState('')
-  const [songName, setSongName] = useState('')
-  const [youTubeVideo, setYouTubeVideo] = useState<YouTubeSearchResults>({} as YouTubeSearchResults)
+export default function RegistrationComponent(props: any) {
+  const [name, setName] = useState("");
+  const [songName, setSongName] = useState("");
+  const [youTubeVideo, setYouTubeVideo] = useState<YouTubeSearchResults>(
+    {} as YouTubeSearchResults
+  );
 
   function handleNameChange(e: any) {
-    setName(e.target.value)
+    setName(e.target.value);
   }
 
   function handleSongNameChange(e: any) {
-    setSongName(e.target.value)
+    setSongName(e.target.value);
   }
 
   useEffect(() => {
     if (!youTubeVideo) {
-      return
+      return;
     }
 
     if (Object.keys(youTubeVideo).length === 0) {
-      return
+      return;
     }
 
     if (songName && songName.trim().length > 0) {
-      return
+      return;
     }
 
-    setSongName(youTubeVideo.title)
+    setSongName(youTubeVideo.title);
   }, [youTubeVideo]);
 
   function handleRegister(e: any) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!youTubeVideo) {
-      return
+      return;
     }
 
     let body = {
@@ -47,27 +59,27 @@ export default function RegistrationComponent(props:any) {
     };
 
     fetch(`/api/queue/${props.queueId}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     })
-      .then(response => response.json())
-      .then(jsonObject => {
+      .then((response) => response.json())
+      .then((jsonObject) => {
         if (jsonObject[0].id) {
-          setName('')
-          setYouTubeVideo({} as YouTubeSearchResults)
-          setSongName('')
+          setName("");
+          setYouTubeVideo({} as YouTubeSearchResults);
+          setSongName("");
 
-          props.onRegisterSuccess()
+          props.onRegisterSuccess();
         }
       });
   }
 
   function handleResetVideo() {
-    setYouTubeVideo({} as YouTubeSearchResults)
-    setSongName('')
+    setYouTubeVideo({} as YouTubeSearchResults);
+    setSongName("");
   }
 
   return (
@@ -75,47 +87,54 @@ export default function RegistrationComponent(props:any) {
       <form onSubmit={handleRegister}>
         <FormControl>
           <FormLabel>Tên</FormLabel>
-          <Input type="text" name="name" value={name} onChange={handleNameChange} />
+          <Input
+            type="text"
+            name="name"
+            value={name}
+            onChange={handleNameChange}
+          />
         </FormControl>
 
         {Search(youTubeVideo, setYouTubeVideo)}
 
         <FormControl mt={3}>
           <FormLabel>Tên Bài Hát</FormLabel>
-          <Input type="text" name="songName" value={songName} onChange={handleSongNameChange} />
+          <Input
+            type="text"
+            name="songName"
+            value={songName}
+            onChange={handleSongNameChange}
+          />
         </FormControl>
 
         {SelectedVideo(youTubeVideo, handleResetVideo)}
 
-        <Button width="full" mt={3} onClick={handleRegister}>Đăng Ký</Button>
+        <Button width="full" mt={3} onClick={handleRegister}>
+          Đăng Ký
+        </Button>
       </form>
     </>
-  )
+  );
 }
 
-
 function Search(video: YouTubeSearchResults, onSetYouTubeVideo: Function) {
-  if (Object.keys(video).length > 0)
-    return
+  if (Object.keys(video).length > 0) return;
 
-  return (
-    <YouTubeSearch onSetYouTubeVideo={onSetYouTubeVideo} />
-  )
+  return <YouTubeSearch onSetYouTubeVideo={onSetYouTubeVideo} />;
 }
 
 function SelectedVideo(video: YouTubeSearchResults, onResetVideo: Function) {
   if (Object.keys(video).length === 0) {
-    return
+    return;
   }
 
   return (
     <>
-      <Card key={video.id} mt={3}
-        direction={{ base: 'column', sm: 'row'}}
-      >
+      <Card key={video.id} mt={3} direction={{ base: "column", sm: "row" }}>
         <YouTubeThumbnail {...video.thumbnails} />
         <CardBody>
-          {video.title}<br />
+          {video.title}
+          <br />
           <small>{video.channelTitle}</small>
         </CardBody>
         <CardFooter>
@@ -123,5 +142,5 @@ function SelectedVideo(video: YouTubeSearchResults, onResetVideo: Function) {
         </CardFooter>
       </Card>
     </>
-  )
+  );
 }

@@ -1,9 +1,23 @@
-import { Button, Center, Container, Heading, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Container,
+  Heading,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useToast,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaQrcode } from 'react-icons/fa';
-import QRCode from 'react-qr-code';
-import RegistrationComponent from '../../../components/Registration';
+import { FaQrcode } from "react-icons/fa";
+import QRCode from "react-qr-code";
+import RegistrationComponent from "../../../components/Registration";
 
 interface QueueObject {
   id: string;
@@ -12,46 +26,55 @@ interface QueueObject {
 }
 
 export default function QueueIndex() {
-  const router = useRouter()
-  const toast = useToast()
-  const queueId = router.query.queueId as string
-  const [queue, setQueue] = useState({})
-  const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false)
+  const router = useRouter();
+  const toast = useToast();
+  const queueId = router.query.queueId as string;
+  const [queue, setQueue] = useState({});
+  const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof queueId === 'undefined')
-      return;
+    if (typeof queueId === "undefined") return;
 
     fetch(`/api/queue/${queueId}`)
-      .then(response => response.json())
-      .then(jsonObject => setQueue(jsonObject))
-  }, [queueId])
-
+      .then((response) => response.json())
+      .then((jsonObject) => setQueue(jsonObject));
+  }, [queueId]);
 
   function handleRegisterSuccess() {
     toast({
-      title: 'Success',
-      description: 'You have been added to the queue.',
-      status: 'success',
+      title: "Success",
+      description: "You have been added to the queue.",
+      status: "success",
       duration: 7 * 1000,
       isClosable: true,
-    })
+    });
   }
 
   return (
     <>
-      <Container maxW='container.md'>
+      <Container maxW="container.md">
         <Heading mt={3}>{(queue as QueueObject).name}</Heading>
-        <Button leftIcon={<Icon as={FaQrcode} />} onClick={() => setQRCodeModalOpen(true)} width="full">Show QR Code</Button>
+        <Button
+          leftIcon={<Icon as={FaQrcode} />}
+          onClick={() => setQRCodeModalOpen(true)}
+          width="full"
+        >
+          Show QR Code
+        </Button>
 
-        <Heading as="h3" mt={3}>Đăng Ký</Heading>
+        <Heading as="h3" mt={3}>
+          Đăng Ký
+        </Heading>
         <RegistrationComponent
           queueId={queueId}
           onRegisterSuccess={handleRegisterSuccess}
         />
       </Container>
 
-      <Modal isOpen={isQRCodeModalOpen} onClose={() => setQRCodeModalOpen(false)}>
+      <Modal
+        isOpen={isQRCodeModalOpen}
+        onClose={() => setQRCodeModalOpen(false)}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>QR Code</ModalHeader>
@@ -59,7 +82,9 @@ export default function QueueIndex() {
           <ModalBody>
             <>
               <Center>
-                {typeof window !== 'undefined' ? <QRCode value={window.location.href} /> : null}
+                {typeof window !== "undefined" ? (
+                  <QRCode value={window.location.href} />
+                ) : null}
               </Center>
             </>
           </ModalBody>
@@ -69,5 +94,5 @@ export default function QueueIndex() {
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 }
