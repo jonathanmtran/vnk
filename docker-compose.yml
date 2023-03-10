@@ -1,0 +1,14 @@
+---
+version: '2.1'
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_PASSWORD=vnk-dev
+    ports:
+      - 127.0.1.1:5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
