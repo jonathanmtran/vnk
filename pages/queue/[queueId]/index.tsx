@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaQrcode } from "react-icons/fa";
@@ -29,6 +30,7 @@ export default function QueueIndex() {
   const router = useRouter();
   const toast = useToast();
   const queueId = router.query.queueId as string;
+  const [title, setTitle] = useState("Văn Nghệ Karaoke");
   const [queue, setQueue] = useState({});
   const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false);
 
@@ -39,6 +41,14 @@ export default function QueueIndex() {
       .then((response) => response.json())
       .then((jsonObject) => setQueue(jsonObject));
   }, [queueId]);
+
+  useEffect(() => {
+    const q = queue as QueueObject;
+
+    if (q.name) {
+      setTitle((t) => q.name + " | " + t);
+    }
+  }, [queue]);
 
   function handleRegisterSuccess() {
     toast({
@@ -52,6 +62,10 @@ export default function QueueIndex() {
 
   return (
     <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <Container maxW="container.md">
         <Heading mt={3}>{(queue as QueueObject).name}</Heading>
         <Button
