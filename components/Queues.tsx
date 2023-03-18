@@ -2,7 +2,7 @@ import { Heading, ListItem, UnorderedList } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Queues(props: any) {
+export default function Queues() {
   const [queues, setQueues] = useState([]);
 
   useEffect(() => {

@@ -98,7 +98,7 @@ export default async function handler(
         affectedRows = rows;
       });
 
-    return res.json({ id: id });
+    return res.json({ id: id, rows: affectedRows });
   }
 
   res.status(501).json({});

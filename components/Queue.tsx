@@ -1,7 +1,6 @@
 import {
   Badge,
   Heading,
-  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -45,6 +44,7 @@ export default class Queue extends Component<QueueProps, QueueState> {
     this.fetchData(this.props.id);
   }
 
+  /* eslint-disable no-unused-vars */
   componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
     if (prevProps.id !== this.props.id) {
       this.setState({
@@ -115,6 +115,10 @@ export default class Queue extends Component<QueueProps, QueueState> {
     })
       .then((response) => response.json())
       .then((jsonResponse) => {
+        if (jsonResponse.id !== this.state.queueId) {
+          console.error({ queueId: this.state.queueId, id: jsonResponse.id });
+        }
+
         this.fetchData(this.state.queueId);
       });
   }

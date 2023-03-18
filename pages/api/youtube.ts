@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import youtubeSearch, {
-  YouTubeSearchOptions,
-  YouTubeSearchResults,
+  YouTubeSearchOptions
 } from "youtube-search";
 
 export default async function handler(
@@ -32,8 +31,6 @@ export default async function handler(
     });
 
     return res.send(searchResults);
-
-    return res.status(500).json({});
   }
 
   return res.status(501).json({});

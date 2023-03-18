@@ -16,8 +16,8 @@ interface QueueItemProps {
   song_name: string;
   youtube_url: string;
   performed: Date;
-  onPerform(id: string): Function;
-  onRemove(id: string): Function;
+  onPerform: Function;
+  onRemove: Function;
 }
 
 export default class QueueItem extends React.Component<QueueItemProps, any> {

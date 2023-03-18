@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardBody,
@@ -7,7 +6,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { YouTubeSearchResults } from "youtube-search";
