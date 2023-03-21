@@ -1,4 +1,10 @@
-import { Heading, ListItem, UnorderedList } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -16,6 +22,11 @@ export default function Queues() {
   return (
     <>
       <Heading>Queues</Heading>
+      <Box textAlign="right">
+        <Button>
+          <Link href="/queue/create">Create Queue</Link>
+        </Button>
+      </Box>
       <UnorderedList>
         {queues.map((q: any) => (
           <ListItem key={q.id}>

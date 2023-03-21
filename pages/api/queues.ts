@@ -35,7 +35,12 @@ export default async function handler(
         response = row[0];
       });
 
-    return res.json(response);
+    const payload: any = {
+      id: response.id,
+      queueName: response.queue_name,
+    };
+
+    return res.json(payload);
   }
 
   return res.status(501).json({});
