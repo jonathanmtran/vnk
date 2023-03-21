@@ -3,6 +3,16 @@ import knextfile from "../../knexfile";
 
 const db = require("knex")(knextfile);
 
+interface resultSet {
+  id: String;
+  queue_name: String;
+}
+
+type createQueueResponse = {
+  id: String;
+  queueName: String;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -22,7 +32,7 @@ export default async function handler(
   } else if (req.method === "POST") {
     const { name } = req.body;
 
-    let response = {};
+    let response = {} as resultSet;
 
     await db("queues")
       .insert(
@@ -35,7 +45,7 @@ export default async function handler(
         response = row[0];
       });
 
-    const payload: any = {
+    const payload: createQueueResponse = {
       id: response.id,
       queueName: response.queue_name,
     };
