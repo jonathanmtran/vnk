@@ -51,6 +51,20 @@ export default async function handler(
     };
 
     return res.json(payload);
+  } else if (req.method === 'DELETE') {
+    const { queueId } = req.body;
+
+    if (!queueId) {
+      return res.status(400).json({})
+    }
+
+    const affectedRows = await db("queues")
+      .where({
+        id: queueId,
+      })
+      .del();
+
+    return res.json({ affectedRows: affectedRows });
   }
 
   return res.status(501).json({});

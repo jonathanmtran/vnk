@@ -1,12 +1,8 @@
-import {
-  Box,
-  Button,
-  Heading,
-  ListItem,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Heading, List, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import QueueI from "./QueueI";
 
 export default function Queues() {
   const [queues, setQueues] = useState([]);
@@ -19,21 +15,46 @@ export default function Queues() {
       });
   }, []);
 
+  const handleDelete = async (queueId: String) => {
+    let affectedRows = 0;
+
+    await fetch("/api/queues", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        queueId: queueId,
+      }),
+    }).then(async (response) => {
+      const responseJson = await response.json();
+
+      if (!response.ok) {
+        console.debug(responseJson);
+      }
+
+      affectedRows = responseJson.affectedRows;
+    });
+
+    return affectedRows;
+  };
+
   return (
     <>
-      <Heading>Queues</Heading>
-      <Box textAlign="right">
-        <Button>
+      <Flex minWidth="max-content" alignItems="center" gap="2">
+        <Box p="2">
+          <Heading>Queues</Heading>
+        </Box>
+        <Spacer />
+        <Button leftIcon={<AddIcon />} size="sm">
           <Link href="/queue/create">Create Queue</Link>
         </Button>
-      </Box>
-      <UnorderedList>
+      </Flex>
+      <List spacing={5}>
         {queues.map((q: any) => (
-          <ListItem key={q.id}>
-            <Link href={`/queue/${q.id}`}>{q.queue_name}</Link>
-          </ListItem>
+          <QueueI key={q.id} queue={q} onDelete={handleDelete} />
         ))}
-      </UnorderedList>
+      </List>
     </>
   );
 }
