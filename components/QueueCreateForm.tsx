@@ -53,7 +53,7 @@ export default function QueueCreateForm(props: any) {
         />
       </FormControl>
 
-      <Button isLoading={isSubmitting} type="submit">
+      <Button mt={4} isLoading={isSubmitting} type="submit">
         Create Queue
       </Button>
     </form>
