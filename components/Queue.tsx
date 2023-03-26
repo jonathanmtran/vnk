@@ -8,7 +8,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { Component } from "react";
-import QueueItem from "./QueueItem";
+import QueueEntry from "./QueueItem";
 
 type QueueProps = {
   id: string;
@@ -139,7 +139,7 @@ export default class Queue extends Component<QueueProps, QueueState> {
             <TabPanel>
               {this.state.upcoming.length === 0 ? "The queue is empty" : null}
               {this.state.upcoming.map((item) => (
-                <QueueItem
+                <QueueEntry
                   key={item.id}
                   {...item}
                   onPerform={this.handlePerform}
@@ -149,7 +149,7 @@ export default class Queue extends Component<QueueProps, QueueState> {
             </TabPanel>
             <TabPanel>
               {this.state.performed.map((item) => (
-                <QueueItem
+                <QueueEntry
                   key={item.id}
                   {...item}
                   onPerform={this.handlePerform}

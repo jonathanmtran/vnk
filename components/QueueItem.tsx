@@ -1,60 +1,66 @@
-import { LinkIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   ButtonGroup,
-  Card,
-  CardBody,
-  CardFooter,
-  Icon,
+  Center,
+  Fade,
+  Flex,
+  Link,
+  ListItem,
+  Spacer,
 } from "@chakra-ui/react";
-import React from "react";
-import { FaMusic, FaUser } from "react-icons/fa";
+import { useState } from "react";
 
-interface QueueItemProps {
-  id: string;
-  name: string;
-  song_name: string;
-  youtube_url: string;
-  performed: Date;
-  onPerform: Function;
-  onRemove: Function;
-}
+export default function QueueItem(props: any) {
+  const [isSubmitting, setIsSubmiting] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
-export default class QueueItem extends React.Component<QueueItemProps, any> {
-  render() {
-    return (
-      <Card key={this.props.id}>
-        <CardBody>
-          <>
-            <Icon as={FaUser} /> {this.props.name}
-            <br />
-            <Icon as={FaMusic} /> {this.props.song_name}
-            <br />
-            <LinkIcon />{" "}
-            <a href={this.props.youtube_url}>{this.props.youtube_url}</a>
-            <br />
-            {this.props.performed}
-          </>
-        </CardBody>
-        {this.props.performed === null ? (
-          <>
-            <CardFooter>
-              <ButtonGroup spacing={1} size="sm">
-                {this.props.performed === null ? (
-                  <Button onClick={() => this.props.onPerform(this.props.id)}>
-                    Mark as Performed
-                  </Button>
-                ) : null}
-                {typeof this.props.onRemove !== "undefined" ? (
-                  <Button onClick={() => this.props.onRemove(this.props.id)}>
-                    Remove
-                  </Button>
-                ) : null}
-              </ButtonGroup>
-            </CardFooter>
-          </>
-        ) : null}
-      </Card>
-    );
-  }
+  const handleDelete = async () => {
+    setIsSubmiting(true);
+
+    const response = await props.onDelete(props.queue.id);
+
+    setTimeout(() => {
+      setIsSubmiting(false);
+      if (response === 1) {
+        setIsVisible(false);
+      }
+    }, 0.5 * 1000);
+  };
+
+  return (
+    <>
+      <Fade in={isVisible}>
+        <ListItem
+          key={props.queue.id}
+          padding={3}
+          borderWidth="1px"
+          borderRadius="lg"
+        >
+          <Flex alignItems="center">
+            <Box>
+              <Center>
+                <Link href={`/queue/${props.queue.id}`}>
+                  {props.queue.queue_name}
+                </Link>
+              </Center>
+            </Box>
+            <Spacer />
+            <ButtonGroup>
+              <Button
+                leftIcon={<DeleteIcon />}
+                size="sm"
+                isLoading={isSubmitting}
+                onClick={handleDelete}
+                colorScheme="red"
+              >
+                Delete
+              </Button>
+            </ButtonGroup>
+          </Flex>
+        </ListItem>
+      </Fade>
+    </>
+  );
 }

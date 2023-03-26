@@ -2,7 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Heading, List, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import QueueI from "./QueueI";
+import QueueItem from "./QueueItem";
 
 export default function Queues() {
   const [queues, setQueues] = useState([]);
@@ -52,7 +52,7 @@ export default function Queues() {
       </Flex>
       <List spacing={5}>
         {queues.map((q: any) => (
-          <QueueI key={q.id} queue={q} onDelete={handleDelete} />
+          <QueueItem key={q.id} queue={q} onDelete={handleDelete} />
         ))}
       </List>
     </>
