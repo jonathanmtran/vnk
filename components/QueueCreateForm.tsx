@@ -24,15 +24,17 @@ export default function QueueCreateForm(props: any) {
       body: JSON.stringify(payload),
     };
 
-    await fetch(endpoint, options).then((response) => {
+    await fetch(endpoint, options).then(async (response) => {
       if (response.ok) {
         setQueueName("");
+
+        const jsonResponse = await response.json();
 
         setTimeout(() => {
           setIsSubmiting(false);
         }, 1 * 1000);
 
-        props.onCreateSuccess();
+        props.onCreateSuccess({ id: jsonResponse.id });
       }
     });
   };

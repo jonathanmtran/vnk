@@ -1,11 +1,33 @@
-import { Container, Heading, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  Heading,
+  Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useToast,
+} from "@chakra-ui/react";
 import Head from "next/head";
+import { useState } from "react";
 import QueueCreateForm from "../../components/QueueCreateForm";
+
+interface handleCreateSuccessParams {
+  id: string;
+}
 
 export default function QueueCreate() {
   const toast = useToast();
+  const [queueId, setQueueId] = useState("");
+  const [isModalOpen, setModalOpen] = useState(true);
 
-  function handleCreateSuccess() {
+  function handleCreateSuccess(callback: handleCreateSuccessParams) {
+    setQueueId(callback.id);
+
     toast({
       title: "Success",
       description: "The queue has been created.",
@@ -13,6 +35,8 @@ export default function QueueCreate() {
       duration: 7 * 1000,
       isClosable: true,
     });
+
+    setModalOpen(true);
   }
 
   return (
@@ -27,6 +51,27 @@ export default function QueueCreate() {
           <QueueCreateForm onCreateSuccess={handleCreateSuccess} />
         </Container>
       </main>
+
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Queue Created</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody></ModalBody>
+
+          <ModalFooter>
+            <Link href={`/queue/${queueId}`}>
+              <Button colorScheme="blue" mr={3}>
+                Go to Queue
+              </Button>
+            </Link>
+
+            <Button variant="ghost" onClick={() => setModalOpen(false)}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
