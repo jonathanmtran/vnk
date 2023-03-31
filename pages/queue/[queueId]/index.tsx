@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { FaQrcode } from "react-icons/fa";
 import QRCode from "react-qr-code";
 import RegistrationComponent from "../../../components/Registration";
+import { config } from "../../../config";
 
 interface QueueObject {
   id: string;
@@ -30,7 +31,7 @@ export default function QueueIndex() {
   const router = useRouter();
   const toast = useToast();
   const queueId = router.query.queueId as string;
-  const [title, setTitle] = useState("Văn Nghệ Karaoke");
+  const [title, setTitle] = useState(config.title);
   const [queue, setQueue] = useState({});
   const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false);
 

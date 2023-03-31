@@ -15,6 +15,7 @@ import {
 import Head from "next/head";
 import { useState } from "react";
 import QueueCreateForm from "../../components/QueueCreateForm";
+import { config } from "../../config";
 
 interface handleCreateSuccessParams {
   id: string;
@@ -42,7 +43,7 @@ export default function QueueCreate() {
   return (
     <>
       <Head>
-        <title>Create Queue</title>
+        <title>Create Queue | {config.title}</title>
       </Head>
 
       <main>
