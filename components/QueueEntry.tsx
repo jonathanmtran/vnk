@@ -23,7 +23,7 @@ interface QueueItemProps {
 export default class QueueEntry extends React.Component<QueueItemProps, any> {
   render() {
     return (
-      <Card key={this.props.id}>
+      <Card key={this.props.id} mt={3}>
         <CardBody>
           <>
             <Icon as={FaUser} /> {this.props.name}

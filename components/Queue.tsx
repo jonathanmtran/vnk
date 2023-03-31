@@ -8,7 +8,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { Component } from "react";
-import QueueEntry from "./QueueItem";
+import QueueEntry from "./QueueEntry";
 
 type QueueProps = {
   id: string;
@@ -126,7 +126,7 @@ export default class Queue extends Component<QueueProps, QueueState> {
   render() {
     return (
       <>
-        <Heading as="h3">Queue </Heading>
+        <Heading as="h3">Queue</Heading>
 
         <Tabs variant="enclosed">
           <TabList>
