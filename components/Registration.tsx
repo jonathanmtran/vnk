@@ -36,10 +36,6 @@ export default function RegistrationComponent(props: any) {
       return;
     }
 
-    if (songName && songName.trim().length > 0) {
-      return;
-    }
-
     setSongName(youTubeVideo.title);
   }, [youTubeVideo]);
 
