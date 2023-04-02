@@ -1,3 +1,4 @@
+import { LexoRank } from "lexorank";
 import type { NextApiRequest, NextApiResponse } from "next";
 import knextfile from "../../../knexfile";
 
@@ -37,7 +38,10 @@ export default async function handler(
 
     await db("queue")
       .where("queue", queueId)
-      .orderBy("created")
+      .orderBy([
+        { column: "sort", order: "asc" },
+        { column: "created", order: "asc" },
+      ])
       .then(function (rows: Queue[]) {
         response.queue = rows;
       });
@@ -45,6 +49,17 @@ export default async function handler(
     return res.json(response);
   } else if (req.method === "POST") {
     const { name, songName, youTubeUrl } = req.body;
+
+    const sortResultset = await db("queue")
+      .select("sort")
+      .where("queue", queueId)
+      .whereNotNull("sort")
+      .orderBy("sort", "desc")
+      .first();
+
+    const lexoRank = sortResultset.sort
+      ? LexoRank.parse(sortResultset.sort).genNext()
+      : LexoRank.middle();
 
     let resultset: any[] = [];
 
@@ -55,8 +70,9 @@ export default async function handler(
           name: name,
           song_name: songName,
           youtube_url: youTubeUrl,
+          sort: lexoRank.toString(),
         },
-        ["id", "name", "song_name", "youtube_url", "created"]
+        ["id", "name", "song_name", "youtube_url", "created", "sort"]
       )
       .then(function (rows: Queue[]) {
         resultset = rows;
