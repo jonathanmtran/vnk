@@ -24,7 +24,7 @@ interface handleCreateSuccessParams {
 export default function QueueCreate() {
   const toast = useToast();
   const [queueId, setQueueId] = useState("");
-  const [isModalOpen, setModalOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   function handleCreateSuccess(callback: handleCreateSuccessParams) {
     setQueueId(callback.id);
