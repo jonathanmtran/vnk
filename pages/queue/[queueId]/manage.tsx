@@ -40,9 +40,11 @@ export default function QueuePage() {
         <title>{title}</title>
       </Head>
 
-      <Container maxW="container.md">
-        <Queue id={queueId} />
-      </Container>
+      <main>
+        <Container maxW="container.lg">
+          <Queue id={queueId} />
+        </Container>
+      </main>
     </>
   );
 }

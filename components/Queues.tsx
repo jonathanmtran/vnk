@@ -42,7 +42,7 @@ export default function Queues() {
   return (
     <>
       <Flex minWidth="max-content" alignItems="center" gap="2">
-        <Box p="2">
+        <Box>
           <Heading>Queues</Heading>
         </Box>
         <Spacer />
@@ -50,6 +50,7 @@ export default function Queues() {
           <Link href="/queue/create">Create Queue</Link>
         </Button>
       </Flex>
+
       <List spacing={5}>
         {queues.map((q: any) => (
           <QueueItem key={q.id} queue={q} onDelete={handleDelete} />
