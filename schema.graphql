@@ -1,0 +1,19 @@
+type Query {
+  queues: [Queues!]!
+}
+
+type Queue {
+  id: ID
+  queueId: String
+  name: String
+  songName: String
+  youTubeUrl: String
+  created: String
+  performed: String
+}
+
+type Queues {
+  id: ID
+  name: String
+  created: String
+}
