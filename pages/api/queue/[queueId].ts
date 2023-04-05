@@ -57,7 +57,7 @@ export default async function handler(
       .orderBy("sort", "desc")
       .first();
 
-    const lexoRank = sortResultset.sort
+    const lexoRank = sortResultset?.sort
       ? LexoRank.parse(sortResultset.sort).genNext()
       : LexoRank.middle();
 
