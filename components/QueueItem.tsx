@@ -1,4 +1,4 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -48,6 +48,14 @@ export default function QueueItem(props: any) {
             </Box>
             <Spacer />
             <ButtonGroup>
+              <Button
+                as={Link}
+                href={`/queue/${props.queue.id}/manage`}
+                leftIcon={<EditIcon />}
+                size="sm"
+              >
+                Manage
+              </Button>
               <Button
                 leftIcon={<DeleteIcon />}
                 size="sm"

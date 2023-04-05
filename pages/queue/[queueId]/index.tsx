@@ -1,9 +1,14 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  ButtonGroup,
   Center,
   Container,
+  Flex,
   Heading,
   Icon,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,6 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   useToast,
 } from "@chakra-ui/react";
 import Head from "next/head";
@@ -67,47 +73,63 @@ export default function QueueIndex() {
         <title>{title}</title>
       </Head>
 
-      <Container maxW="container.md">
-        <Heading mt={3}>{(queue as QueueObject).name}</Heading>
-        <Button
-          leftIcon={<Icon as={FaQrcode} />}
-          onClick={() => setQRCodeModalOpen(true)}
-          width="full"
+      <main>
+        <Container maxW="container.lg">
+          <Flex minWidth="max-content" alignItems="center">
+            <Box>
+              <Heading>{(queue as QueueObject).name}</Heading>
+            </Box>
+            <Spacer />
+            <ButtonGroup>
+              <Button
+                as={Link}
+                leftIcon={<EditIcon />}
+                href={`/queue/${(queue as QueueObject).id}/manage`}
+                size="sm"
+              >
+                Manage
+              </Button>
+              <Button
+                leftIcon={<Icon as={FaQrcode} />}
+                onClick={() => setQRCodeModalOpen(true)}
+                size="sm"
+              >
+                Show QR Code
+              </Button>
+            </ButtonGroup>
+          </Flex>
+
+          <Heading as="h3" mt={3}>
+            Đăng Ký
+          </Heading>
+          <RegistrationComponent
+            queueId={queueId}
+            onRegisterSuccess={handleRegisterSuccess}
+          />
+        </Container>
+        <Modal
+          isOpen={isQRCodeModalOpen}
+          onClose={() => setQRCodeModalOpen(false)}
         >
-          Show QR Code
-        </Button>
-
-        <Heading as="h3" mt={3}>
-          Đăng Ký
-        </Heading>
-        <RegistrationComponent
-          queueId={queueId}
-          onRegisterSuccess={handleRegisterSuccess}
-        />
-      </Container>
-
-      <Modal
-        isOpen={isQRCodeModalOpen}
-        onClose={() => setQRCodeModalOpen(false)}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>QR Code</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <>
-              <Center>
-                {typeof window !== "undefined" ? (
-                  <QRCode value={window.location.href} />
-                ) : null}
-              </Center>
-            </>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={() => setQRCodeModalOpen(false)}>Done</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>QR Code</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <>
+                <Center>
+                  {typeof window !== "undefined" ? (
+                    <QRCode value={window.location.href} />
+                  ) : null}
+                </Center>
+              </>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={() => setQRCodeModalOpen(false)}>Done</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </main>
     </>
   );
 }
