@@ -3,10 +3,11 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { readFileSync } from 'fs';
 import { NextRequest } from 'next/server';
 import knextfile from "../../knexfile";
+import { Resolvers } from '../../src/__generated__/resolvers-types';
 
 const db = require("knex")(knextfile);
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
     queues: async () => {
       const resultset = await db("queues")
