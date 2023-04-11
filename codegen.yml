@@ -10,4 +10,4 @@ generates:
     config:
       useIndexSignature: true
       # More on this below!
-      contextType: "../index#MyContext"
+      #contextType: "../index#MyContext"
