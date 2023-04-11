@@ -1,5 +1,6 @@
 type Query {
   queues: [Queues!]!
+  youTubeVideos(query: String!): [YouTubeVideo!]!
 }
 
 type Queue {
@@ -16,4 +17,10 @@ type Queues {
   id: ID
   name: String
   created: String
+}
+
+type YouTubeVideo {
+  id: String
+  link: String
+  title: String
 }

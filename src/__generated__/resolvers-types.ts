@@ -1,9 +1,11 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { MyContext } from '../../pages/api/graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,6 +18,12 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   queues: Array<Queues>;
+  youTubeVideos: Array<YouTubeVideo>;
+};
+
+
+export type QueryYouTubeVideosArgs = {
+  query: Scalars['String'];
 };
 
 export type Queue = {
@@ -34,6 +42,13 @@ export type Queues = {
   created?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
+};
+
+export type YouTubeVideo = {
+  __typename?: 'YouTubeVideo';
+  id?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -114,6 +129,7 @@ export type ResolversTypes = ResolversObject<{
   Queue: ResolverTypeWrapper<Queue>;
   Queues: ResolverTypeWrapper<Queues>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  YouTubeVideo: ResolverTypeWrapper<YouTubeVideo>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -124,13 +140,15 @@ export type ResolversParentTypes = ResolversObject<{
   Queue: Queue;
   Queues: Queues;
   String: Scalars['String'];
+  YouTubeVideo: YouTubeVideo;
 }>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   queues?: Resolver<Array<ResolversTypes['Queues']>, ParentType, ContextType>;
+  youTubeVideos?: Resolver<Array<ResolversTypes['YouTubeVideo']>, ParentType, ContextType, RequireFields<QueryYouTubeVideosArgs, 'query'>>;
 }>;
 
-export type QueueResolvers<ContextType = any, ParentType extends ResolversParentTypes['Queue'] = ResolversParentTypes['Queue']> = ResolversObject<{
+export type QueueResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Queue'] = ResolversParentTypes['Queue']> = ResolversObject<{
   created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -141,16 +159,24 @@ export type QueueResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type QueuesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Queues'] = ResolversParentTypes['Queues']> = ResolversObject<{
+export type QueuesResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Queues'] = ResolversParentTypes['Queues']> = ResolversObject<{
   created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = any> = ResolversObject<{
+export type YouTubeVideoResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['YouTubeVideo'] = ResolversParentTypes['YouTubeVideo']> = ResolversObject<{
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type Resolvers<ContextType = MyContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Queue?: QueueResolvers<ContextType>;
   Queues?: QueuesResolvers<ContextType>;
+  YouTubeVideo?: YouTubeVideoResolvers<ContextType>;
 }>;
 
