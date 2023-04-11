@@ -1,5 +1,4 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { MyContext } from '../index';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -127,11 +126,11 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
 }>;
 
-export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   queues?: Resolver<Array<ResolversTypes['Queues']>, ParentType, ContextType>;
 }>;
 
-export type QueueResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Queue'] = ResolversParentTypes['Queue']> = ResolversObject<{
+export type QueueResolvers<ContextType = any, ParentType extends ResolversParentTypes['Queue'] = ResolversParentTypes['Queue']> = ResolversObject<{
   created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -142,14 +141,14 @@ export type QueueResolvers<ContextType = MyContext, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type QueuesResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Queues'] = ResolversParentTypes['Queues']> = ResolversObject<{
+export type QueuesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Queues'] = ResolversParentTypes['Queues']> = ResolversObject<{
   created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = MyContext> = ResolversObject<{
+export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Queue?: QueueResolvers<ContextType>;
   Queues?: QueuesResolvers<ContextType>;
