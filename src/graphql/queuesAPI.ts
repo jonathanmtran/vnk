@@ -41,4 +41,14 @@ export default class QueuesAPI {
       created: response.created,
     };
   }
+
+  async deleteQueue(queueId: String) {
+    const affectedRows = await db("queues")
+      .where({
+        id: queueId,
+      })
+      .del();
+
+    return affectedRows;
+  }
 }
