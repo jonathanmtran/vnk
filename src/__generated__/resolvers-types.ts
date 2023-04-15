@@ -15,6 +15,13 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddToQueueInput = {
+  name?: InputMaybe<Scalars['String']>;
+  queueId?: InputMaybe<Scalars['ID']>;
+  songName?: InputMaybe<Scalars['String']>;
+  youTubeUrl?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateQueueInput = {
   name: Scalars['String'];
 };
@@ -30,8 +37,14 @@ export type DeleteQueueResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  AddToQueue: QueueEntry;
   CreateQueue: Queue;
   DeleteQueue: DeleteQueueResponse;
+};
+
+
+export type MutationAddToQueueArgs = {
+  input: AddToQueueInput;
 };
 
 
@@ -46,8 +59,14 @@ export type MutationDeleteQueueArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  queue?: Maybe<Queue>;
   queues: Array<Queue>;
   youTubeVideos: Array<YouTubeVideo>;
+};
+
+
+export type QueryQueueArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -60,6 +79,7 @@ export type Queue = {
   created?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
+  queue?: Maybe<Array<QueueEntry>>;
 };
 
 export type QueueEntry = {
@@ -152,6 +172,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AddToQueueInput: AddToQueueInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateQueueInput: CreateQueueInput;
   DeleteQueueInput: DeleteQueueInput;
@@ -168,6 +189,7 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AddToQueueInput: AddToQueueInput;
   Boolean: Scalars['Boolean'];
   CreateQueueInput: CreateQueueInput;
   DeleteQueueInput: DeleteQueueInput;
@@ -188,11 +210,13 @@ export type DeleteQueueResponseResolvers<ContextType = MyContext, ParentType ext
 }>;
 
 export type MutationResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  AddToQueue?: Resolver<ResolversTypes['QueueEntry'], ParentType, ContextType, RequireFields<MutationAddToQueueArgs, 'input'>>;
   CreateQueue?: Resolver<ResolversTypes['Queue'], ParentType, ContextType, RequireFields<MutationCreateQueueArgs, 'input'>>;
   DeleteQueue?: Resolver<ResolversTypes['DeleteQueueResponse'], ParentType, ContextType, RequireFields<MutationDeleteQueueArgs, 'input'>>;
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  queue?: Resolver<Maybe<ResolversTypes['Queue']>, ParentType, ContextType, Partial<QueryQueueArgs>>;
   queues?: Resolver<Array<ResolversTypes['Queue']>, ParentType, ContextType>;
   youTubeVideos?: Resolver<Array<ResolversTypes['YouTubeVideo']>, ParentType, ContextType, RequireFields<QueryYouTubeVideosArgs, 'query'>>;
 }>;
@@ -201,6 +225,7 @@ export type QueueResolvers<ContextType = MyContext, ParentType extends Resolvers
   created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  queue?: Resolver<Maybe<Array<ResolversTypes['QueueEntry']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
