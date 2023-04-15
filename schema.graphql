@@ -1,9 +1,11 @@
 type Query {
+  queue(id: ID): Queue
   queues: [Queue!]!
   youTubeVideos(query: String!): [YouTubeVideo!]!
 }
 
 type Mutation {
+  AddToQueue(input: AddToQueueInput!): QueueEntry!
   CreateQueue(input: CreateQueueInput!): Queue!
   DeleteQueue(input: DeleteQueueInput!): DeleteQueueResponse!
 }
@@ -12,6 +14,10 @@ type Queue {
   id: ID
   name: String
   created: String
+}
+
+extend type Queue {
+  queue: [QueueEntry!]
 }
 
 type QueueEntry {
@@ -28,6 +34,13 @@ type YouTubeVideo {
   id: String
   link: String
   title: String
+}
+
+input AddToQueueInput {
+  queueId: ID
+  name: String
+  songName: String
+  youTubeUrl: String
 }
 
 input CreateQueueInput {

@@ -9,6 +9,22 @@ interface resultSet {
 }
 
 export default class QueuesAPI {
+  async getQueue(queueId: String) {
+    const resultset = await db("queues")
+      .where({
+        id: queueId,
+      })
+      .select();
+
+    return resultset.map((row: any) => {
+      return {
+        id: row.id,
+        name: row.queue_name,
+        created: row.created,
+      };
+    });
+  }
+
   async getQueues() {
     const resultset = await db("queues").select();
 
