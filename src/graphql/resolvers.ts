@@ -19,5 +19,16 @@ export default {
     CreateQueue: async (_, args, { dataSources: { queuesApi } }) => {
       return queuesApi.createQueue(args.input.name);
     },
+    DeleteQueue: async (_, args, { dataSources: { queuesApi } }) => {
+      if (!args.input.id) {
+        return;
+      }
+
+      const affectedRows = queuesApi.deleteQueue(args.input.id);
+
+      return {
+        affectedRows: affectedRows,
+      };
+    },
   },
 } as Resolvers;

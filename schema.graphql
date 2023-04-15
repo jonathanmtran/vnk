@@ -5,6 +5,7 @@ type Query {
 
 type Mutation {
   CreateQueue(input: CreateQueueInput!): Queue!
+  DeleteQueue(input: DeleteQueueInput!): DeleteQueueResponse!
 }
 
 type Queue {
@@ -31,4 +32,12 @@ type YouTubeVideo {
 
 input CreateQueueInput {
   name: String!
+}
+
+input DeleteQueueInput {
+  id: ID
+}
+
+type DeleteQueueResponse {
+  affectedRows: Int
 }
