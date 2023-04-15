@@ -18,11 +18,12 @@ const server = new ApolloServer<MyContext>({
   typeDefs,
 });
 
-export default startServerAndCreateNextHandler<NextRequest>(server, {
-  context: async (req) => ({
-    req,
-    dataSources: {
-      youTubeApi: new YouTubeAPI(),
-    },
-  }),
+export default startServerAndCreateNextHandler<NextRequest, MyContext>(server, {
+  context: async () => {
+    return {
+      dataSources: {
+        youTubeApi: new YouTubeAPI(),
+      },
+    };
+  },
 });
