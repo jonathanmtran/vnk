@@ -7,7 +7,9 @@ import QueuesAPI from "../../src/graphql/queuesAPI";
 import resolvers from "../../src/graphql/resolvers";
 import { YouTubeAPI } from "../../src/youTubeAPI";
 
-const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
+const typeDefs = readFileSync("./src/graphql/schema.graphql", {
+  encoding: "utf-8",
+});
 
 export interface MyContext {
   dataSources: {
