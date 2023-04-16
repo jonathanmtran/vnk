@@ -30,6 +30,7 @@ type QueueEntry {
   youTubeUrl: String
   created: String
   performed: String
+  sort: String
 }
 
 type YouTubeVideo {
@@ -48,6 +49,7 @@ input AddToQueueInput {
 extend input AddToQueueInput {
   id: ID
   performed: String
+  sort: String
 }
 
 input CreateQueueInput {

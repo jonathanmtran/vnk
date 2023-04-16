@@ -70,18 +70,41 @@ export default class QueueAPI {
   }
 
   async update(args: AddToQueueInput) {
-    const { queueId, id, name, songName, youTubeUrl, performed } = args;
+    const { id, name, songName, youTubeUrl, performed, sort } = args;
+
+    const queueEntry = await db("queue").where("id", id).first();
 
     const resultset = await db("queue")
-      .where("queue", queueId)
       .where("id", id)
-      .update({
-        name,
-        songName,
-        youTubeUrl,
-        performed,
-      });
+      .update(
+        {
+          name: name ? name : queueEntry.name,
+          song_name: songName ? songName : queueEntry.song_name,
+          youtube_url: youTubeUrl ? youTubeUrl : queueEntry.youtube_url,
+          performed: performed ? performed : queueEntry.performed,
+          sort: sort ? sort : queueEntry.sort,
+        },
+        [
+          "id",
+          "queue",
+          "name",
+          "song_name",
+          "youtube_url",
+          "performed",
+          "created",
+          "sort",
+        ]
+      );
 
-    return resultset;
+    return {
+      id: resultset[0].id,
+      queueId: resultset[0].queue,
+      name: resultset[0].name,
+      songName: resultset[0].song_name,
+      youTubeUrl: resultset[0].youtube_url,
+      created: resultset[0].created,
+      performed: resultset[0].performed,
+      sort: resultset[0].sort,
+    };
   }
 }

@@ -21,6 +21,7 @@ export type AddToQueueInput = {
   performed?: InputMaybe<Scalars['String']>;
   queueId?: InputMaybe<Scalars['ID']>;
   songName?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
   youTubeUrl?: InputMaybe<Scalars['String']>;
 };
 
@@ -109,6 +110,7 @@ export type QueueEntry = {
   performed?: Maybe<Scalars['String']>;
   queueId?: Maybe<Scalars['String']>;
   songName?: Maybe<Scalars['String']>;
+  sort?: Maybe<Scalars['String']>;
   youTubeUrl?: Maybe<Scalars['String']>;
 };
 
@@ -259,6 +261,7 @@ export type QueueEntryResolvers<ContextType = MyContext, ParentType extends Reso
   performed?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   queueId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   songName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sort?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   youTubeUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
