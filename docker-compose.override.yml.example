@@ -1,0 +1,14 @@
+---
+services:
+  app:
+    build: .
+    environment:
+      - POSTGRES_HOST=db
+      #-POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=vnk-dev
+      #-POSTGRES_DB=postgres
+      - NEXT_YT_API_KEY=youtube-api-key-goes-here
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
