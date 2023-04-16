@@ -8,6 +8,8 @@ type Mutation {
   AddToQueue(input: AddToQueueInput!): QueueEntry!
   CreateQueue(input: CreateQueueInput!): Queue!
   DeleteQueue(input: DeleteQueueInput!): DeleteQueueResponse!
+  DeleteQueueEntry(input: DeleteQueueEntryInput!): DeleteQueueResponse!
+  UpdateQueueEntry(input: AddToQueueInput!): QueueEntry!
 }
 
 type Queue {
@@ -43,11 +45,21 @@ input AddToQueueInput {
   youTubeUrl: String
 }
 
+extend input AddToQueueInput {
+  id: ID
+  performed: String
+}
+
 input CreateQueueInput {
   name: String!
 }
 
 input DeleteQueueInput {
+  id: ID
+}
+
+input DeleteQueueEntryInput {
+  queueId: ID
   id: ID
 }
 

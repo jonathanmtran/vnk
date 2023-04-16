@@ -45,5 +45,11 @@ export default {
         affectedRows: affectedRows,
       };
     },
+    DeleteQueueEntry: async (_, args, { dataSources: { queueApi } }) => {
+      return { affectedRows: queueApi.delete(args.input) };
+    },
+    UpdateQueueEntry: async (_, args, { dataSources: { queueApi } }) => {
+      return queueApi.update(args.input);
+    },
   },
 } as Resolvers;

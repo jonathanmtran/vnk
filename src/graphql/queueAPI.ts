@@ -1,6 +1,9 @@
 import { LexoRank } from "lexorank";
 import knextfile from "../../knexfile";
-import { AddToQueueInput } from "../__generated__/resolvers-types";
+import {
+  AddToQueueInput,
+  DeleteQueueEntryInput,
+} from "../__generated__/resolvers-types";
 
 const db = require("knex")(knextfile);
 
@@ -58,5 +61,27 @@ export default class QueueAPI {
       youTubeUrl: resultset[0].youtube_url,
       created: resultset[0].created,
     };
+  }
+
+  async delete(args: DeleteQueueEntryInput) {
+    const { queueId, id } = args;
+
+    return await db("queue").where("id", id).where("queue", queueId).del();
+  }
+
+  async update(args: AddToQueueInput) {
+    const { queueId, id, name, songName, youTubeUrl, performed } = args;
+
+    const resultset = await db("queue")
+      .where("queue", queueId)
+      .where("id", id)
+      .update({
+        name,
+        songName,
+        youTubeUrl,
+        performed,
+      });
+
+    return resultset;
   }
 }
