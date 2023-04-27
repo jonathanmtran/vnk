@@ -1,3 +1,4 @@
+import { gql, useLazyQuery } from "@apollo/client";
 import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -21,41 +22,29 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaQrcode } from "react-icons/fa";
 import QRCode from "react-qr-code";
 import RegistrationComponent from "../../../components/Registration";
 import { config } from "../../../config";
 
-interface QueueObject {
-  id: string;
-  name: string;
-  queue: Array<any>;
-}
+const QUEUE_QUERY = gql`
+  query Queue($queueId: ID) {
+    queue(id: $queueId) {
+      id
+      name
+      created
+    }
+  }
+`;
 
 export default function QueueIndex() {
   const router = useRouter();
   const toast = useToast();
   const queueId = router.query.queueId as string;
   const [title, setTitle] = useState(config.title);
-  const [queue, setQueue] = useState({});
   const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (typeof queueId === "undefined") return;
-
-    fetch(`/api/queue/${queueId}`)
-      .then((response) => response.json())
-      .then((jsonObject) => setQueue(jsonObject));
-  }, [queueId]);
-
-  useEffect(() => {
-    const q = queue as QueueObject;
-
-    if (q.name) {
-      setTitle((t) => q.name + " | " + t);
-    }
-  }, [queue]);
+  const [getQueue, { called, loading, data }] = useLazyQuery(QUEUE_QUERY);
 
   function handleRegisterSuccess() {
     toast({
@@ -65,6 +54,26 @@ export default function QueueIndex() {
       duration: 7 * 1000,
       isClosable: true,
     });
+  }
+
+  if (called && loading) {
+    return;
+  }
+
+  if (!called) {
+    if (!queueId) {
+      return;
+    }
+
+    getQueue({
+      variables: {
+        queueId,
+      },
+    }).then((res) => {
+      setTitle((t) => res.data.queue.name + " | " + t);
+    });
+
+    return;
   }
 
   return (
@@ -77,14 +86,14 @@ export default function QueueIndex() {
         <Container maxW="container.lg">
           <Flex minWidth="max-content" alignItems="center">
             <Box>
-              <Heading>{(queue as QueueObject).name}</Heading>
+              <Heading>{data.queue.name}</Heading>
             </Box>
             <Spacer />
             <ButtonGroup>
               <Button
                 as={Link}
                 leftIcon={<EditIcon />}
-                href={`/queue/${(queue as QueueObject).id}/manage`}
+                href={`/queue/${data.queue.id}/manage`}
                 size="sm"
               >
                 Manage

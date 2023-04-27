@@ -1,3 +1,4 @@
+import { gql, useMutation } from "@apollo/client";
 import {
   Button,
   Card,
@@ -12,12 +13,26 @@ import { YouTubeSearchResults } from "youtube-search";
 import YouTubeSearch from "./YouTubeSearch";
 import YouTubeThumbnail from "./YouTubeThumbnail";
 
+const ADD_TO_QUEUE = gql`
+  mutation AddToQueue($input: AddToQueueInput!) {
+    AddToQueue(input: $input) {
+      id
+      name
+      songName
+      youTubeUrl
+      created
+      performed
+    }
+  }
+`;
+
 export default function RegistrationComponent(props: any) {
   const [name, setName] = useState("");
   const [songName, setSongName] = useState("");
   const [youTubeVideo, setYouTubeVideo] = useState<YouTubeSearchResults>(
     {} as YouTubeSearchResults
   );
+  const [addToQueue] = useMutation(ADD_TO_QUEUE);
 
   function handleNameChange(e: any) {
     setName(e.target.value);
@@ -39,36 +54,34 @@ export default function RegistrationComponent(props: any) {
     setSongName(youTubeVideo.title);
   }, [youTubeVideo]);
 
-  function handleRegister(e: any) {
+  async function handleRegister(e: any) {
     e.preventDefault();
 
     if (!youTubeVideo) {
       return;
     }
 
-    let body = {
-      name: name.trim(),
-      songName: songName.trim(),
-      youTubeUrl: youTubeVideo.link,
-    };
-
-    fetch(`/api/queue/${props.queueId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    await addToQueue({
+      variables: {
+        input: {
+          queueId: props.queueId,
+          name: name.trim(),
+          songName: songName.trim(),
+          youTubeUrl: youTubeVideo.link,
+        },
       },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((jsonObject) => {
-        if (jsonObject[0].id) {
-          setName("");
-          setYouTubeVideo({} as YouTubeSearchResults);
-          setSongName("");
+    }).then((res) => {
+      if (res.errors) {
+        console.error(res.errors);
+        return;
+      }
 
-          props.onRegisterSuccess();
-        }
-      });
+      setName("");
+      setYouTubeVideo({} as YouTubeSearchResults);
+      setSongName("");
+
+      props.onRegisterSuccess();
+    });
   }
 
   function handleResetVideo() {
