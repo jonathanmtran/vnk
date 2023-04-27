@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 import QueueAPI from "../../src/graphql/queueAPI";
 import QueuesAPI from "../../src/graphql/queuesAPI";
 import resolvers from "../../src/graphql/resolvers";
-import { YouTubeAPI } from "../../src/youTubeAPI";
+import { YouTubeAPI } from "../../src/graphql/youTubeAPI";
 
 const typeDefs = readFileSync("./src/graphql/schema.graphql", {
   encoding: "utf-8",
