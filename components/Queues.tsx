@@ -1,43 +1,43 @@
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Heading, List, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import QueueItem from "./QueueItem";
 
 export default function Queues() {
-  const [queues, setQueues] = useState([]);
+  const GET_QUEUES = gql`
+    query Queues {
+      queues {
+        id
+        name
+        created
+      }
+    }
+  `;
 
-  useEffect(() => {
-    fetch("/api/queues")
-      .then((response) => response.json())
-      .then((jsonObject) => {
-        setQueues(jsonObject.queues);
-      });
-  }, []);
+  const DELETE_QUEUE = gql`
+    mutation DeleteQueue($input: DeleteQueueInput!) {
+      DeleteQueue(input: $input) {
+        affectedRows
+      }
+    }
+  `;
+
+  const { loading, data } = useQuery(GET_QUEUES);
+  const [deleteQueue] = useMutation(DELETE_QUEUE);
 
   const handleDelete = async (queueId: String) => {
-    let affectedRows = 0;
-
-    await fetch("/api/queues", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await deleteQueue({
+      variables: {
+        input: {
+          id: queueId,
+        },
       },
-      body: JSON.stringify({
-        queueId: queueId,
-      }),
-    }).then(async (response) => {
-      const responseJson = await response.json();
-
-      if (!response.ok) {
-        console.debug(responseJson);
-      }
-
-      affectedRows = responseJson.affectedRows;
     });
-
-    return affectedRows;
+    return res.data.DeleteQueue.affectedRows;
   };
+
+  if (loading) return <>Loading ...</>;
 
   return (
     <>
@@ -51,11 +51,17 @@ export default function Queues() {
         </Button>
       </Flex>
 
-      <List spacing={5}>
-        {queues.map((q: any) => (
-          <QueueItem key={q.id} queue={q} onDelete={handleDelete} />
-        ))}
-      </List>
+      {loading ? (
+        <>Loading ...</>
+      ) : (
+        <>
+          <List spacing={5}>
+            {data?.queues.map((q: any) => (
+              <QueueItem key={q.id} queue={q} onDelete={handleDelete} />
+            ))}
+          </List>
+        </>
+      )}
     </>
   );
 }

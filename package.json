@@ -10,12 +10,14 @@
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.12",
     "@as-integrations/next": "^1.3.0",
     "@chakra-ui/icons": "^2.0.13",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "framer-motion": "^7.10.3",
+    "graphql": "^16.6.0",
     "knex": "^2.3.0",
     "lexorank": "^1.0.5",
     "next": "13.0.6",

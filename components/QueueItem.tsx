@@ -42,7 +42,7 @@ export default function QueueItem(props: any) {
             <Box>
               <Center>
                 <Link href={`/queue/${props.queue.id}`}>
-                  {props.queue.queue_name}
+                  {props.queue.name}
                 </Link>
               </Center>
             </Box>
