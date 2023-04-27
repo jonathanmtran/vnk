@@ -10,17 +10,7 @@ import {
 import React from "react";
 import { FaMusic, FaUser } from "react-icons/fa";
 
-interface QueueItemProps {
-  id: string;
-  name: string;
-  song_name: string;
-  youtube_url: string;
-  performed: Date;
-  onPerform: Function;
-  onRemove: Function;
-}
-
-export default class QueueEntry extends React.Component<QueueItemProps, any> {
+export default class QueueEntry extends React.Component<any, any> {
   render() {
     return (
       <Card key={this.props.id} mt={3}>
@@ -28,10 +18,10 @@ export default class QueueEntry extends React.Component<QueueItemProps, any> {
           <>
             <Icon as={FaUser} /> {this.props.name}
             <br />
-            <Icon as={FaMusic} /> {this.props.song_name}
+            <Icon as={FaMusic} /> {this.props.songName}
             <br />
             <LinkIcon />{" "}
-            <a href={this.props.youtube_url}>{this.props.youtube_url}</a>
+            <a href={this.props.youtube_url}>{this.props.youTubeUrl}</a>
             <br />
             {this.props.performed}
           </>

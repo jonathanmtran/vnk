@@ -1,3 +1,4 @@
+import { gql, useMutation, useQuery } from "@apollo/client";
 import {
   Badge,
   Heading,
@@ -14,79 +15,95 @@ type QueueProps = {
   id: string;
 };
 
+const QUEUE_QUERY = gql`
+  query Queue($queueId: ID) {
+    queue(id: $queueId) {
+      id
+      name
+      created
+      queue {
+        id
+        name
+        songName
+        youTubeUrl
+        performed
+        created
+      }
+    }
+  }
+`;
+
+const UPDATE_QUEUE_ENTRY_MUTATION = gql`
+  mutation UpdateQueueEntry($input: AddToQueueInput!) {
+    UpdateQueueEntry(input: $input) {
+      id
+      performed
+    }
+  }
+`;
+
+const DELETE_QUEUE_ENTRY_MUTATION = gql`
+  mutation DeleteQueueEntry($input: DeleteQueueEntryInput!) {
+    DeleteQueueEntry(input: $input) {
+      affectedRows
+    }
+  }
+`;
+
 export default function Queue(props: QueueProps) {
   const queueId = props.id;
-  const [queue, setQueue] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [performed, setPerformed] = useState([]);
+  const { data, refetch } = useQuery(QUEUE_QUERY, {
+    variables: {
+      queueId,
+    },
+  });
+  const [updateQueueEntry] = useMutation(UPDATE_QUEUE_ENTRY_MUTATION);
+  const [deleteQueueEntry] = useMutation(DELETE_QUEUE_ENTRY_MUTATION);
 
   useEffect(() => {
-    fetchData(queueId);
-  }, [queueId]);
+    if (!data || !data.queue) {
+      return;
+    }
 
-  const fetchData = (id: string) => {
-    if (typeof id === "undefined") return;
-    console.debug({ ctx: "fetchData" });
-    fetch(`/api/queue/${id}`)
-      .then((response) => response.json())
-      .then((json) => {
-        const upcoming = json.queue.filter((item: any) => {
-          return item.performed === null;
-        });
+    const upcoming = data.queue.queue.filter((item: any) => {
+      return item.performed === null;
+    });
 
-        const performed = json.queue.filter((item: any) => {
-          return item.performed !== null;
-        });
+    const performed = data.queue.queue.filter((item: any) => {
+      return item.performed !== null;
+    });
 
-        setQueue(json.queue);
-        setUpcoming(upcoming);
-        setPerformed(performed);
-      });
+    setUpcoming(upcoming);
+    setPerformed(performed);
+  }, [data]);
+
+  const handleRemove = async (id: string) => {
+    await deleteQueueEntry({
+      variables: {
+        input: {
+          queueId,
+          id,
+        },
+      },
+    });
+
+    refetch();
   };
 
-  const handleRemove = (id: string) => {
-    fetch(`/api/queue/${queueId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+  const handlePerform = async (id: string) => {
+    await updateQueueEntry({
+      variables: {
+        input: {
+          queueId,
+          id,
+          performed: new Date(),
+        },
       },
-      body: JSON.stringify({
-        id: id,
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        const updatedQueue = queue.filter((item: any) => {
-          return item.id !== json.id;
-        });
+    });
 
-        const updatedUpcomingQueue = upcoming.filter((item: any) => {
-          return item.id !== json.id;
-        });
-
-        setQueue(updatedQueue);
-        setUpcoming(updatedUpcomingQueue);
-      });
-  };
-
-  const handlePerform = (id: string) => {
-    fetch(`/api/queue/${queueId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-      }),
-    })
-      .then((response) => response.json())
-      .then((jsonResponse) => {
-        if (jsonResponse.id !== queueId) {
-          console.error({ queueId: queueId, id: jsonResponse.id });
-        }
-
-        fetchData(queueId);
-      });
+    refetch();
   };
 
   return (
