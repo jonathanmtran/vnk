@@ -118,7 +118,20 @@ export type YouTubeVideo = {
   __typename?: 'YouTubeVideo';
   id?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
+  thumbnails?: Maybe<YouTubeVideoThumbnails>;
   title?: Maybe<Scalars['String']>;
+};
+
+export type YouTubeVideoThumbnail = {
+  __typename?: 'YouTubeVideoThumbnail';
+  height?: Maybe<Scalars['Int']>;
+  url?: Maybe<Scalars['String']>;
+  width?: Maybe<Scalars['Int']>;
+};
+
+export type YouTubeVideoThumbnails = {
+  __typename?: 'YouTubeVideoThumbnails';
+  default?: Maybe<YouTubeVideoThumbnail>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -207,6 +220,8 @@ export type ResolversTypes = ResolversObject<{
   QueueEntry: ResolverTypeWrapper<QueueEntry>;
   String: ResolverTypeWrapper<Scalars['String']>;
   YouTubeVideo: ResolverTypeWrapper<YouTubeVideo>;
+  YouTubeVideoThumbnail: ResolverTypeWrapper<YouTubeVideoThumbnail>;
+  YouTubeVideoThumbnails: ResolverTypeWrapper<YouTubeVideoThumbnails>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -225,6 +240,8 @@ export type ResolversParentTypes = ResolversObject<{
   QueueEntry: QueueEntry;
   String: Scalars['String'];
   YouTubeVideo: YouTubeVideo;
+  YouTubeVideoThumbnail: YouTubeVideoThumbnail;
+  YouTubeVideoThumbnails: YouTubeVideoThumbnails;
 }>;
 
 export type DeleteQueueResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['DeleteQueueResponse'] = ResolversParentTypes['DeleteQueueResponse']> = ResolversObject<{
@@ -269,7 +286,20 @@ export type QueueEntryResolvers<ContextType = MyContext, ParentType extends Reso
 export type YouTubeVideoResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['YouTubeVideo'] = ResolversParentTypes['YouTubeVideo']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumbnails?: Resolver<Maybe<ResolversTypes['YouTubeVideoThumbnails']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type YouTubeVideoThumbnailResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['YouTubeVideoThumbnail'] = ResolversParentTypes['YouTubeVideoThumbnail']> = ResolversObject<{
+  height?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  width?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type YouTubeVideoThumbnailsResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['YouTubeVideoThumbnails'] = ResolversParentTypes['YouTubeVideoThumbnails']> = ResolversObject<{
+  default?: Resolver<Maybe<ResolversTypes['YouTubeVideoThumbnail']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -280,5 +310,7 @@ export type Resolvers<ContextType = MyContext> = ResolversObject<{
   Queue?: QueueResolvers<ContextType>;
   QueueEntry?: QueueEntryResolvers<ContextType>;
   YouTubeVideo?: YouTubeVideoResolvers<ContextType>;
+  YouTubeVideoThumbnail?: YouTubeVideoThumbnailResolvers<ContextType>;
+  YouTubeVideoThumbnails?: YouTubeVideoThumbnailsResolvers<ContextType>;
 }>;
 

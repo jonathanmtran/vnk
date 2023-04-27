@@ -1,3 +1,4 @@
+import { gql, useLazyQuery } from "@apollo/client";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -23,6 +24,23 @@ import { useState } from "react";
 import { YouTubeSearchResults } from "youtube-search";
 import YouTubeThumbnail from "./YouTubeThumbnail";
 
+const QUERY_YT_QUERY = gql`
+  query YouTubeVideos($query: String!) {
+    youTubeVideos(query: $query) {
+      id
+      title
+      link
+      thumbnails {
+        default {
+          url
+          height
+          width
+        }
+      }
+    }
+  }
+`;
+
 export default function YouTubeSearch(props: any) {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState(
@@ -31,6 +49,7 @@ export default function YouTubeSearch(props: any) {
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const [previewVideo, setPreviewVideo] = useState({} as YouTubeSearchResults);
   const [previewId, setPreviewId] = useState("");
+  const [searchYt] = useLazyQuery(QUERY_YT_QUERY);
 
   const handlePreview = (video: YouTubeSearchResults) => {
     const url = new URL(video.link);
@@ -54,18 +73,14 @@ export default function YouTubeSearch(props: any) {
 
     setQuery(query.trim());
 
-    fetch("/api/youtube", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    searchYt({
+      variables: {
+        query,
       },
-      body: JSON.stringify({ query }),
-    })
-      .then((response) => response.json())
-      .then((jsonResponse) => {
-        const searchResults = jsonResponse;
-        setQueryResults(searchResults.results as Array<YouTubeSearchResults>);
-      });
+    }).then((res) => {
+      const results = res.data.youTubeVideos as Array<YouTubeSearchResults>;
+      setQueryResults(results);
+    });
   };
 
   return (

@@ -37,6 +37,17 @@ type YouTubeVideo {
   id: String
   link: String
   title: String
+  thumbnails: YouTubeVideoThumbnails
+}
+
+type YouTubeVideoThumbnail {
+  url: String
+  height: Int
+  width: Int
+}
+
+type YouTubeVideoThumbnails {
+  default: YouTubeVideoThumbnail
 }
 
 input AddToQueueInput {
