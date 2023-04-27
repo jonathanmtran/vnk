@@ -1,42 +1,40 @@
+import { gql, useMutation } from "@apollo/client";
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 
+const CREATE_QUEUE = gql`
+  mutation CreateQueue($input: CreateQueueInput!) {
+    CreateQueue(input: $input) {
+      id
+      name
+      created
+    }
+  }
+`;
+
 export default function QueueCreateForm(props: any) {
-  const [isSubmitting, setIsSubmiting] = useState(false);
+  const [createQueue, { loading, error }] = useMutation(CREATE_QUEUE);
   const [queueName, setQueueName] = useState("");
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    setIsSubmiting(true);
-
     event.preventDefault();
 
-    const payload = {
-      name: event.target.queueName.value.trim(),
-    };
-
-    const endpoint = "/api/queues";
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await createQueue({
+      variables: {
+        input: {
+          name: event.target.queueName.value.trim(),
+        },
       },
-      body: JSON.stringify(payload),
-    };
-
-    await fetch(endpoint, options).then(async (response) => {
-      if (response.ok) {
-        setQueueName("");
-
-        const jsonResponse = await response.json();
-
-        setTimeout(() => {
-          setIsSubmiting(false);
-        }, 1 * 1000);
-
-        props.onCreateSuccess({ id: jsonResponse.id });
-      }
     });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setQueueName("");
+
+    props.onCreateSuccess({ id: res.data.CreateQueue.id });
   };
 
   return (
@@ -51,11 +49,11 @@ export default function QueueCreateForm(props: any) {
           isRequired={true}
           value={queueName}
           onChange={(e) => setQueueName(e.target.value)}
-          disabled={isSubmitting}
+          disabled={loading}
         />
       </FormControl>
 
-      <Button mt={4} isLoading={isSubmitting} type="submit">
+      <Button mt={4} isLoading={loading} type="submit">
         Create Queue
       </Button>
     </form>
