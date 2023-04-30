@@ -22,6 +22,7 @@ export default class QueueAPI {
         name: row.name,
         songName: row.song_name,
         youTubeUrl: row.youtube_url,
+        sort: row.sort,
         created: row.created,
         performed: row.performed,
       };
@@ -58,6 +59,7 @@ export default class QueueAPI {
       queueId: queueId,
       name: resultset[0].name,
       songName: resultset[0].song_name,
+      sort: resultset[0].sort,
       youTubeUrl: resultset[0].youtube_url,
       created: resultset[0].created,
     };
@@ -90,9 +92,9 @@ export default class QueueAPI {
           "name",
           "song_name",
           "youtube_url",
+          "sort",
           "performed",
           "created",
-          "sort",
         ]
       );
 
