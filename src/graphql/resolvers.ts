@@ -2,7 +2,7 @@ import { Resolvers } from "../__generated__/resolvers-types";
 
 export default {
   Query: {
-    queue: async (_, args, { dataSources: { queueApi, queuesApi } }) => {
+    queue: async (_, args, { dataSources: { queuesApi } }) => {
       if (!args.id) {
         return;
       }
@@ -11,7 +11,6 @@ export default {
 
       return {
         ...queueMeta[0],
-        queue: queueApi.getQueue(args.id),
       };
     },
     queues: async (_, __, { dataSources: { queuesApi } }) => {
@@ -25,6 +24,15 @@ export default {
       }
 
       return youTubeApi.search(query);
+    },
+  },
+  Queue: {
+    queue: async (queue, __, { dataSources: { queueApi } }) => {
+      if (!queue.id) {
+        return [];
+      }
+
+      return queueApi.getQueue(queue.id);
     },
   },
   Mutation: {
