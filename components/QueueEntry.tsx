@@ -10,41 +10,37 @@ import {
 import React from "react";
 import { FaMusic, FaUser } from "react-icons/fa";
 
-export default class QueueEntry extends React.Component<any, any> {
-  render() {
-    return (
-      <Card key={this.props.id} mt={3}>
+export default function QueueEntry(props: any) {
+  const { id, name, songName, youTubeUrl, performed, onPerform, onRemove } =
+    props;
+
+  return (
+    <>
+      <Card key={id} mt={3}>
         <CardBody>
           <>
-            <Icon as={FaUser} /> {this.props.name}
+            <Icon as={FaUser} /> {name}
             <br />
-            <Icon as={FaMusic} /> {this.props.songName}
+            <Icon as={FaMusic} /> {songName}
             <br />
-            <LinkIcon />{" "}
-            <a href={this.props.youtube_url}>{this.props.youTubeUrl}</a>
+            <LinkIcon /> <a href={youTubeUrl}>{youTubeUrl}</a>
             <br />
-            {this.props.performed}
+            {performed}
           </>
         </CardBody>
-        {this.props.performed === null ? (
-          <>
-            <CardFooter>
-              <ButtonGroup spacing={1} size="sm">
-                {this.props.performed === null ? (
-                  <Button onClick={() => this.props.onPerform(this.props.id)}>
-                    Mark as Performed
-                  </Button>
-                ) : null}
-                {typeof this.props.onRemove !== "undefined" ? (
-                  <Button onClick={() => this.props.onRemove(this.props.id)}>
-                    Remove
-                  </Button>
-                ) : null}
-              </ButtonGroup>
-            </CardFooter>
-          </>
+        {performed === null ? (
+          <CardFooter>
+            <ButtonGroup spacing={1} size="sm">
+              {performed === null ? (
+                <Button onClick={() => onPerform(id)}>Mark as Performed</Button>
+              ) : null}
+              {typeof onRemove !== "undefined" ? (
+                <Button onClick={() => onRemove(id)}>Remove</Button>
+              ) : null}
+            </ButtonGroup>
+          </CardFooter>
         ) : null}
       </Card>
-    );
-  }
+    </>
+  );
 }
