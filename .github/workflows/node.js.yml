@@ -76,3 +76,27 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
+
+  deploy-stg:
+    needs: build-container
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          tags: |
+            type=sha,prefix=
+      - name: update stg
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: dokku
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            -- git:from-image vnk-stg ${{ steps.meta.outputs.tags }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          proxy_username: ${{ secrets.SSH_USER }}
+          proxy_key: ${{ secrets.SSH_KEY }}
