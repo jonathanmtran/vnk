@@ -13,16 +13,16 @@ import {
 import { useState } from "react";
 
 export default function QueueItem(props: any) {
-  const [isSubmitting, setIsSubmiting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
   const handleDelete = async () => {
-    setIsSubmiting(true);
+    setIsSubmitting(true);
 
     const response = await props.onDelete(props.queue.id);
 
     setTimeout(() => {
-      setIsSubmiting(false);
+      setIsSubmitting(false);
       if (response === 1) {
         setIsVisible(false);
       }
