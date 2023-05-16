@@ -87,6 +87,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix=
       - name: update stg
