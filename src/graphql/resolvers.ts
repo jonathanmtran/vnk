@@ -1,6 +1,8 @@
+import { DateTimeResolver } from "graphql-scalars";
 import { Resolvers } from "../__generated__/resolvers-types";
 
 export default {
+  DateTime: DateTimeResolver,
   Query: {
     queue: async (_, args, { dataSources: { queuesApi } }) => {
       if (!args.id) {

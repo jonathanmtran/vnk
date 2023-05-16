@@ -1,3 +1,5 @@
+scalar DateTime
+
 type Query {
   queue(id: ID): Queue
   queues: [Queue!]!
@@ -28,8 +30,8 @@ type QueueEntry {
   name: String
   songName: String
   youTubeUrl: String
-  created: String
-  performed: String
+  created: DateTime
+  performed: DateTime
   sort: String
 }
 

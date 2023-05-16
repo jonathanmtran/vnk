@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { MyContext } from '../../pages/api/graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export type AddToQueueInput = {
@@ -104,10 +105,10 @@ export type Queue = {
 
 export type QueueEntry = {
   __typename?: 'QueueEntry';
-  created?: Maybe<Scalars['String']>;
+  created?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
-  performed?: Maybe<Scalars['String']>;
+  performed?: Maybe<Scalars['DateTime']>;
   queueId?: Maybe<Scalars['String']>;
   songName?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
@@ -209,6 +210,7 @@ export type ResolversTypes = ResolversObject<{
   AddToQueueInput: AddToQueueInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CreateQueueInput: CreateQueueInput;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   DeleteQueueEntryInput: DeleteQueueEntryInput;
   DeleteQueueInput: DeleteQueueInput;
   DeleteQueueResponse: ResolverTypeWrapper<DeleteQueueResponse>;
@@ -229,6 +231,7 @@ export type ResolversParentTypes = ResolversObject<{
   AddToQueueInput: AddToQueueInput;
   Boolean: Scalars['Boolean'];
   CreateQueueInput: CreateQueueInput;
+  DateTime: Scalars['DateTime'];
   DeleteQueueEntryInput: DeleteQueueEntryInput;
   DeleteQueueInput: DeleteQueueInput;
   DeleteQueueResponse: DeleteQueueResponse;
@@ -243,6 +246,10 @@ export type ResolversParentTypes = ResolversObject<{
   YouTubeVideoThumbnail: YouTubeVideoThumbnail;
   YouTubeVideoThumbnails: YouTubeVideoThumbnails;
 }>;
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type DeleteQueueResponseResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['DeleteQueueResponse'] = ResolversParentTypes['DeleteQueueResponse']> = ResolversObject<{
   affectedRows?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -272,10 +279,10 @@ export type QueueResolvers<ContextType = MyContext, ParentType extends Resolvers
 }>;
 
 export type QueueEntryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['QueueEntry'] = ResolversParentTypes['QueueEntry']> = ResolversObject<{
-  created?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  created?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  performed?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  performed?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   queueId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   songName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sort?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -304,6 +311,7 @@ export type YouTubeVideoThumbnailsResolvers<ContextType = MyContext, ParentType 
 }>;
 
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
+  DateTime?: GraphQLScalarType;
   DeleteQueueResponse?: DeleteQueueResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
