@@ -30,6 +30,14 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_PASSWORD: vnk-dev
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -46,7 +54,14 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+      - run: node_modules/.bin/knex migrate:latest
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: vnk-dev
       - run: npm run test
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: vnk-dev
 
   build:
     needs: test
@@ -57,8 +72,8 @@ jobs:
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: '${{ env.NODE_VERSION }}'
-          cache: 'npm'
+          node-version: "${{ env.NODE_VERSION }}"
+          cache: "npm"
       - run: npm ci
       - uses: actions/cache@v3
         with:
