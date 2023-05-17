@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FaMusic, FaUser } from "react-icons/fa";
+import { GiMicrophone } from "react-icons/gi";
 
 export default function QueueEntry(props: any) {
   const { id, name, songName, youTubeUrl, performed, onPerform, onRemove } =
@@ -24,8 +25,12 @@ export default function QueueEntry(props: any) {
             <Icon as={FaMusic} /> {songName}
             <br />
             <LinkIcon /> <a href={youTubeUrl}>{youTubeUrl}</a>
-            <br />
-            {performed}
+            {performed !== null ? (
+              <>
+                <br />
+                <Icon as={GiMicrophone} /> {performed}
+              </>
+            ) : null}
           </>
         </CardBody>
         {performed === null ? (
