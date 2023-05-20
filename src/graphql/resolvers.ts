@@ -12,7 +12,7 @@ export default {
       const queueMeta = await queuesApi.getQueue(args.id);
 
       return {
-        ...queueMeta[0],
+        ...queueMeta,
       };
     },
     queues: async (_, __, { dataSources: { queuesApi } }) => {
