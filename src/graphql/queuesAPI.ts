@@ -16,6 +16,10 @@ export default class QueuesAPI {
       })
       .first();
 
+    if (!row) {
+      return undefined;
+    }
+
     return {
       id: row.id,
       name: row.queue_name,
