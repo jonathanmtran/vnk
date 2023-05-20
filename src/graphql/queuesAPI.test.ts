@@ -11,4 +11,24 @@ describe('queues API', () => {
 
     expect(newQueue.name).toBe(queueName);
   });
+
+  test('get queue', async () => {
+    const newQueue = await queuesApi.createQueue('test get queue');
+
+    const queue = await queuesApi.getQueue(newQueue.id);
+
+    expect(queue).toHaveProperty('id', newQueue.id);
+  });
+
+  test('delete queue', async () => {
+    const queue = await queuesApi.createQueue('test delete queue');
+
+    const queueId = queue.id;
+
+    await queuesApi.deleteQueue(queueId);
+
+    const deletedQueue = await queuesApi.getQueue(queueId);
+
+    expect(deletedQueue).toBeUndefined();
+  });
 });
