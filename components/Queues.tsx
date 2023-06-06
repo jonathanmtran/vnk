@@ -1,8 +1,9 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Heading, List, Spacer } from "@chakra-ui/react";
-import Link from "next/link";
-import QueueItem from "./QueueItem";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { AddIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Heading, List, Spacer } from '@chakra-ui/react';
+import Link from 'next/link';
+import QueueItem from './QueueItem';
 
 export default function Queues() {
   const GET_QUEUES = gql`
@@ -23,6 +24,7 @@ export default function Queues() {
     }
   `;
 
+  const { user } = useUser();
   const { loading, data } = useQuery(GET_QUEUES);
   const [deleteQueue] = useMutation(DELETE_QUEUE);
 
@@ -46,9 +48,11 @@ export default function Queues() {
           <Heading>Queues</Heading>
         </Box>
         <Spacer />
-        <Button leftIcon={<AddIcon />} size="sm">
-          <Link href="/queue/create">Create Queue</Link>
-        </Button>
+        {user ? (
+          <Button leftIcon={<AddIcon />} size="sm">
+            <Link href="/queue/create">Create Queue</Link>
+          </Button>
+        ) : null}
       </Flex>
 
       {loading ? (

@@ -1,5 +1,6 @@
-import { gql, useLazyQuery } from "@apollo/client";
-import { EditIcon } from "@chakra-ui/icons";
+import { gql, useLazyQuery } from '@apollo/client';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -19,14 +20,14 @@ import {
   ModalOverlay,
   Spacer,
   useToast,
-} from "@chakra-ui/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { FaQrcode } from "react-icons/fa";
-import QRCode from "react-qr-code";
-import RegistrationComponent from "../../../components/Registration";
-import { config } from "../../../config";
+} from '@chakra-ui/react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { FaQrcode } from 'react-icons/fa';
+import QRCode from 'react-qr-code';
+import RegistrationComponent from '../../../components/Registration';
+import { config } from '../../../config';
 
 const QUEUE_QUERY = gql`
   query Queue($queueId: ID) {
@@ -39,6 +40,7 @@ const QUEUE_QUERY = gql`
 `;
 
 export default function QueueIndex() {
+  const { user } = useUser();
   const router = useRouter();
   const toast = useToast();
   const queueId = router.query.queueId as string;
@@ -48,9 +50,9 @@ export default function QueueIndex() {
 
   function handleRegisterSuccess() {
     toast({
-      title: "Success",
-      description: "You have been added to the queue.",
-      status: "success",
+      title: 'Success',
+      description: 'You have been added to the queue.',
+      status: 'success',
       duration: 7 * 1000,
       isClosable: true,
     });
@@ -70,7 +72,7 @@ export default function QueueIndex() {
         queueId,
       },
     }).then((res) => {
-      setTitle((t) => res.data.queue.name + " | " + t);
+      setTitle((t) => res.data.queue.name + ' | ' + t);
     });
 
     return;
@@ -90,14 +92,16 @@ export default function QueueIndex() {
             </Box>
             <Spacer />
             <ButtonGroup>
-              <Button
-                as={Link}
-                leftIcon={<EditIcon />}
-                href={`/queue/${data.queue.id}/manage`}
-                size="sm"
-              >
-                Manage
-              </Button>
+              {user ? (
+                <Button
+                  as={Link}
+                  leftIcon={<EditIcon />}
+                  href={`/queue/${data.queue.id}/manage`}
+                  size="sm"
+                >
+                  Manage
+                </Button>
+              ) : null}
               <Button
                 leftIcon={<Icon as={FaQrcode} />}
                 onClick={() => setQRCodeModalOpen(true)}
@@ -127,7 +131,7 @@ export default function QueueIndex() {
             <ModalBody>
               <>
                 <Center>
-                  {typeof window !== "undefined" ? (
+                  {typeof window !== 'undefined' ? (
                     <QRCode value={window.location.href} />
                   ) : null}
                 </Center>
