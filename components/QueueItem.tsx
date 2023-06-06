@@ -1,4 +1,5 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -9,10 +10,11 @@ import {
   Link,
   ListItem,
   Spacer,
-} from "@chakra-ui/react";
-import { useState } from "react";
+} from '@chakra-ui/react';
+import { useState } from 'react';
 
 export default function QueueItem(props: any) {
+  const { user } = useUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -47,25 +49,27 @@ export default function QueueItem(props: any) {
               </Center>
             </Box>
             <Spacer />
-            <ButtonGroup>
-              <Button
-                as={Link}
-                href={`/queue/${props.queue.id}/manage`}
-                leftIcon={<EditIcon />}
-                size="sm"
-              >
-                Manage
-              </Button>
-              <Button
-                leftIcon={<DeleteIcon />}
-                size="sm"
-                isLoading={isSubmitting}
-                onClick={handleDelete}
-                colorScheme="red"
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
+            {user ? (
+              <ButtonGroup>
+                <Button
+                  as={Link}
+                  href={`/queue/${props.queue.id}/manage`}
+                  leftIcon={<EditIcon />}
+                  size="sm"
+                >
+                  Manage
+                </Button>
+                <Button
+                  leftIcon={<DeleteIcon />}
+                  size="sm"
+                  isLoading={isSubmitting}
+                  onClick={handleDelete}
+                  colorScheme="red"
+                >
+                  Delete
+                </Button>
+              </ButtonGroup>
+            ) : null}
           </Flex>
         </ListItem>
       </Fade>
